@@ -1,8 +1,10 @@
 /** @type {import('next').Config} */
 const nextConfig = {
-  webpack: (config) => {
-    config.externals = [...config.externals, '@heroicons/react'];
-    return config;
+  output: 'standalone',
+  reactStrictMode: true,
+  swcMinify: true,
+  experimental: {
+    serverActions: true,
   },
 };
 
