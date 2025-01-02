@@ -9,7 +9,10 @@ app = FastAPI()
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "https://tenkanalyzer.onrender.com",  # Your Vercel domain
+        "http://localhost:3000"  # Keep local development
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

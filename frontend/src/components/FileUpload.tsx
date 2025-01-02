@@ -45,8 +45,8 @@ export default function FileUpload(): React.ReactElement {
     formData.append('file', file);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const response = await axios.post<Analysis>(`${apiUrl}/analyze`, formData, {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        const response = await axios.post<Analysis>(`${apiUrl}/analyze`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
