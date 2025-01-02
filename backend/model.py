@@ -22,7 +22,7 @@ class TenKAnalyzer:
         """Initialize the analyzer with DeepSeek API credentials."""
         self.client = OpenAI(
             api_key=api_key,
-            base_url="https://api.deepseek.com"
+            base_url="https://api.deepseek.com/v1"
         )
         # Initialize tokenizer for counting tokens
         self.tokenizer = tiktoken.encoding_for_model("gpt-4")  # Using GPT-4 tokenizer as approximation
