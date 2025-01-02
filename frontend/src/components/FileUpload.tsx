@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -12,9 +12,14 @@ interface Analysis {
   risks_and_challenges: string[];
   strategic_initiatives: string[];
   significant_changes: string[];
+  [key: string]: string[]; // Index signature for dynamic keys
 }
 
-export default function FileUpload() {
+interface Categories {
+  [key: string]: string;
+}
+
+export default function FileUpload(): React.ReactElement {
   const [file, setFile] = useState<File | null>(null);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,7 +36,7 @@ export default function FileUpload() {
     }
   }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (): Promise<void> => {
     if (!file) return;
     setLoading(true);
     setError(null);
@@ -55,16 +60,23 @@ export default function FileUpload() {
     }
   };
 
-  const categories = {
+  const categories: Categories = {
     'Key Financial Metrics': 'Learn about the company\'s financial performance',
     'Risks and Challenges': 'Understand potential threats and obstacles',
     'Strategic Initiatives': 'Discover future plans and strategies',
     'Significant Changes': 'Track important company developments'
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setError(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 p-4 md:p-8">
-      {/* Rest of your component code stays the same */}
       <div className="max-w-3xl mx-auto space-y-8">
         <div className="text-center space-y-2">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
@@ -82,7 +94,7 @@ export default function FileUpload() {
           <CardContent>
             <div
               onDrop={onDrop}
-              onDragOver={(e) => e.preventDefault()}
+              onDragOver={(e: React.DragEvent<HTMLDivElement>) => e.preventDefault()}
               className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center transition-colors hover:border-blue-400 cursor-pointer bg-gray-50"
             >
               <CloudArrowUpIcon className="mx-auto h-12 w-12 text-gray-400" />
@@ -96,10 +108,7 @@ export default function FileUpload() {
                     type="file"
                     className="hidden"
                     accept=".pdf"
-                    onChange={(e) => {
-                      const selectedFile = e.target.files?.[0];
-                      if (selectedFile) setFile(selectedFile);
-                    }}
+                    onChange={handleFileChange}
                   />
                 </label>
                 <p className="mt-1 text-xs text-gray-500">PDF up to 10MB</p>
@@ -132,18 +141,18 @@ export default function FileUpload() {
 
         {analysis && (
           <div className="space-y-6">
-            {Object.entries(analysis).map(([category, items]) => (
+            {Object.entries(analysis).map(([category, items]: [string, string[]]) => (
               <Card key={category}>
                 <CardHeader>
                   <CardTitle>
-                    {category.split('_').map(word => 
+                    {category.split('_').map((word: string) => 
                       word.charAt(0).toUpperCase() + word.slice(1)
                     ).join(' ')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
-                    {items.map((item, index) => (
+                    {items.map((item: string, index: number) => (
                       <li key={index} className="text-sm text-gray-700 leading-relaxed">
                         {item}
                       </li>
@@ -157,7 +166,7 @@ export default function FileUpload() {
 
         {!analysis && (
           <div className="grid md:grid-cols-2 gap-4 mt-8">
-            {Object.entries(categories).map(([title, description]) => (
+            {Object.entries(categories).map(([title, description]: [string, string]) => (
               <Card key={title}>
                 <CardHeader>
                   <CardTitle className="text-lg">{title}</CardTitle>
