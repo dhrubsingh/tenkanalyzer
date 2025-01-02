@@ -2,10 +2,11 @@
 const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
-  swcMinify: true,
   experimental: {
-    serverActions: true,
-  },
+    serverActions: {
+      allowedOrigins: ['localhost:3000']
+    }
+  }
 };
 
-module.exports = nextConfig;
+export default nextConfig;
