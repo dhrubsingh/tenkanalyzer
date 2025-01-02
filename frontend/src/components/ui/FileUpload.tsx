@@ -1,11 +1,12 @@
-"use client";
+'use client';
 
+import dynamic from 'next/dynamic';
 import { useState, useCallback } from 'react';
-import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 
 interface Analysis {
   key_financial_metrics: string[];
@@ -40,10 +41,16 @@ export default function FileUpload() {
     formData.append('file', file);
 
     try {
-      const response = await axios.post<Analysis>('http://localhost:8000/analyze', formData);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await axios.post<Analysis>(`${apiUrl}/analyze`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       setAnalysis(response.data);
     } catch (err) {
       setError('Error analyzing the document. Please try again.');
+      console.error('Error:', err);
     } finally {
       setLoading(false);
     }
@@ -58,8 +65,8 @@ export default function FileUpload() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 p-4 md:p-8">
+      {/* Rest of your component code stays the same */}
       <div className="max-w-3xl mx-auto space-y-8">
-        {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
             10-K Filing Analyzer
@@ -69,13 +76,11 @@ export default function FileUpload() {
           </p>
         </div>
 
-        {/* Main Upload Card */}
         <Card>
           <CardHeader>
             <CardTitle>Upload Document</CardTitle>
           </CardHeader>
           <CardContent>
-            {/* Upload Area */}
             <div
               onDrop={onDrop}
               onDragOver={(e) => e.preventDefault()}
@@ -102,7 +107,6 @@ export default function FileUpload() {
               </div>
             </div>
 
-            {/* File Selected */}
             {file && (
               <div className="mt-4">
                 <div className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-md">
@@ -118,7 +122,6 @@ export default function FileUpload() {
               </div>
             )}
 
-            {/* Error Message */}
             {error && (
               <Alert variant="destructive" className="mt-4">
                 <AlertCircle className="h-4 w-4" />
@@ -128,7 +131,6 @@ export default function FileUpload() {
           </CardContent>
         </Card>
 
-        {/* Analysis Results */}
         {analysis && (
           <div className="space-y-6">
             {Object.entries(analysis).map(([category, items]) => (
@@ -154,7 +156,6 @@ export default function FileUpload() {
           </div>
         )}
 
-        {/* Feature Cards */}
         {!analysis && (
           <div className="grid md:grid-cols-2 gap-4 mt-8">
             {Object.entries(categories).map(([title, description]) => (

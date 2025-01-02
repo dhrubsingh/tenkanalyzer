@@ -1,7 +1,9 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').Config} */
+const nextConfig = {
+  webpack: (config) => {
+    config.externals = [...config.externals, '@heroicons/react'];
+    return config;
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
