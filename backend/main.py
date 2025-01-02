@@ -15,8 +15,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize analyzer
 api_key = os.getenv("DEEPSEEK_API_KEY")
+if not api_key:
+    raise ValueError("DEEPSEEK_API_KEY environment variable is not set")
+
 analyzer = TenKAnalyzer(api_key)
 
 @app.post("/analyze")

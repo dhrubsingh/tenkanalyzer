@@ -1,8 +1,7 @@
-fastapi==0.109.2
-uvicorn==0.27.1
-python-multipart==0.0.9
-pydantic==2.6.1
-python-dotenv==1.0.0
-PyPDF2==3.0.1
-tiktoken==0.5.2
-openai==1.12.0
+fastapi
+python-multipart
+uvicorn
+python-dotenv
+openai>=1.12.0
+PyPDF2
+tiktoken
