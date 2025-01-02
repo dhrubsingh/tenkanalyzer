@@ -1,0 +1,40 @@
+# Environment variables
+.env
+.env.*
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Analysis output files
+backend/10k_analysis.json
+backend/coinbase.pdf
+backend/nvidia.pdf
+
+# macOS system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
